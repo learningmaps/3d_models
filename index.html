@@ -49,6 +49,40 @@
             border-top: 1px solid #eee;
         }
 
+        /* Annotation/Hotspot styling */
+        .hotspot {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 4px;
+            border: 1px solid #4285f4;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            color: #333;
+            display: block;
+            font-family: sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 6px;
+            position: relative;
+            pointer-events: none; /* Make labels non-interactive */
+        }
+
+        .hotspot::before {
+            content: "";
+            display: block;
+            width: 8px;
+            height: 8px;
+            background: #4285f4;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: -12px;
+            transform: translateY(-50%);
+        }
+
+        /* Hide annotations in AR if they interfere */
+        model-viewer[ar-status="active"] .hotspot {
+            display: none;
+        }
+
         /* AR Button styling */
         #ar-button {
             background-image: url(https://modelviewer.dev/assets/ic_view_in_ar_new_googblue_48dp.png);
@@ -103,6 +137,19 @@
         shadow-intensity="1" 
         auto-rotate 
         exposure="1">
+
+        <button class="hotspot" slot="hotspot-length" data-position="0.41m 0.01m 0m" data-normal="0m 1m 0m">
+            82cm Length
+        </button>
+        <button class="hotspot" slot="hotspot-width" data-position="0m 0.01m 0.19m" data-normal="0m 1m 0m">
+            38cm Width
+        </button>
+        <button class="hotspot" slot="hotspot-thickness" data-position="0m 0m 0m" data-normal="1m 0m 0m">
+            1.9cm Thick
+        </button>
+        <button class="hotspot" slot="hotspot-roller" data-position="0m -0.1m 0m" data-normal="0m 0m 1m">
+            11cm Roller
+        </button>
         
         <button slot="ar-button" id="ar-button">
             View in your space
