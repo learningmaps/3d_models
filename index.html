@@ -6,6 +6,8 @@
     <title>Balance Board Design</title>
     <!-- Import the component -->
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+    <!-- Import icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -51,7 +53,7 @@
             right: 16px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
             z-index: 20;
         }
 
@@ -59,20 +61,21 @@
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid #ccc;
             padding: 8px;
-            border-radius: 4px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 18px;
             color: #333;
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: all 0.2s;
         }
 
         .control-btn:active {
+            transform: scale(0.9);
             background: #e0e0e0;
         }
 
@@ -82,51 +85,64 @@
             border-color: #4285f4;
         }
 
-        /* CAD Callouts */
-        .hotspot {
-            background: none;
-            border: none;
-            padding: 0;
-            pointer-events: none;
-            display: none; /* Hidden by default */
-        }
-
-        .hotspot.visible {
-            display: block;
-        }
-
-        .cad-label {
-            background: #4285f4;
-            color: white;
-            padding: 2px 8px;
+        /* Specs Table Overlay */
+        .specs-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
             border-radius: 12px;
-            font-size: 11px;
-            font-weight: bold;
-            white-space: nowrap;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 100;
+            width: 85%;
+            max-width: 320px;
+            display: none;
         }
 
-        /* Dimension Lines */
-        .cad-line {
-            position: absolute;
-            background: #4285f4;
-            height: 1px;
+        .specs-overlay.visible {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
         }
 
-        .cad-line::before, .cad-line::after {
-            content: "";
-            position: absolute;
-            width: 1px;
-            height: 10px;
-            background: #4285f4;
-            top: -5px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -45%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
         }
-        .cad-line::before { left: 0; }
-        .cad-line::after { right: 0; }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .specs-table th, .specs-table td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .specs-table th {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .specs-table td {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+
+        .close-specs {
+            float: right;
+            cursor: pointer;
+            color: #999;
+            font-size: 20px;
+        }
 
         .bottom-bar {
-            padding: 12px;
+            padding: 16px;
             background: #fff;
             display: flex;
             justify-content: center;
@@ -138,18 +154,19 @@
             background: #4285f4;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 24px;
+            border-radius: 25px;
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
         }
 
         #ar-button {
             background: #fff;
             border: 1px solid #ccc;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 12px 24px;
+            border-radius: 25px;
             font-weight: 600;
             font-size: 14px;
             display: flex;
@@ -162,8 +179,8 @@
 <body>
 
     <header>
-        <h1>Specs: Balance Board</h1>
-        <div id="ortho-status" style="font-size: 10px; opacity: 0.7;">PERSPECTIVE</div>
+        <h1>Balance Board Viewer</h1>
+        <div id="ortho-status" style="font-size: 10px; opacity: 0.7;">3D VIEW</div>
     </header>
 
     <model-viewer 
@@ -178,61 +195,56 @@
         shadow-intensity="1" 
         auto-rotate 
         exposure="1">
-
-        <!-- Dimension Hotspots -->
-        <button class="hotspot" slot="hotspot-length" data-position="0m 0.05m 0m" data-normal="0m 1m 0m">
-            <div style="display: flex; flex-direction: column; align-items: center; transform: translateY(-20px);">
-                <div class="cad-label">82cm Length</div>
-                <div class="cad-line" style="width: 160px; margin-top: 4px;"></div>
-            </div>
-        </button>
-
-        <button class="hotspot" slot="hotspot-width" data-position="0m 0.05m 0m" data-normal="0m 1m 0m">
-            <div style="display: flex; flex-direction: column; align-items: center; transform: rotate(90deg) translateY(-20px);">
-                <div class="cad-label">38cm Width</div>
-                <div class="cad-line" style="width: 80px; margin-top: 4px;"></div>
-            </div>
-        </button>
-
-        <button class="hotspot" slot="hotspot-roller" data-position="0m -0.11m 0m" data-normal="0m 0m 1m">
-            <div style="display: flex; flex-direction: column; align-items: center; transform: translateY(10px);">
-                <div class="cad-line" style="width: 40px; margin-bottom: 4px;"></div>
-                <div class="cad-label">11cm Roller</div>
-            </div>
-        </button>
         
         <div class="view-controls">
-            <button class="control-btn" onclick="setView('top')">TOP</button>
-            <button class="control-btn" onclick="setView('side')">SIDE</button>
-            <button class="control-btn" onclick="setView('front')">FRONT</button>
-            <button class="control-btn" id="ortho-btn" onclick="toggleOrtho()">2D</button>
+            <button class="control-btn" onclick="setView('top')" title="Top View">
+                <i class="fas fa-layer-group"></i>
+            </button>
+            <button class="control-btn" onclick="setView('side')" title="Side View">
+                <i class="fas fa-arrows-left-right"></i>
+            </button>
+            <button class="control-btn" onclick="setView('front')" title="Front View">
+                <i class="fas fa-desktop"></i>
+            </button>
+            <button class="control-btn" id="ortho-btn" onclick="toggleOrtho()" title="Toggle 2D/3D">
+                <i class="fas fa-cube"></i>
+            </button>
+        </div>
+
+        <div class="specs-overlay" id="specs-modal">
+            <i class="fas fa-times close-specs" onclick="toggleSpecs()"></i>
+            <h2 style="margin: 0 0 15px 0; font-size: 18px; color: #2c3e50;">Design Specifications</h2>
+            <table class="specs-table">
+                <tr><th>Length</th><td>82 cm</td></tr>
+                <tr><th>Width</th><td>38 cm</td></tr>
+                <tr><th>Thickness</th><td>1.9 cm</td></tr>
+                <tr><th>Roller Ø</th><td>11 cm</td></tr>
+                <tr><th>Roller Length</th><td>42 cm</td></tr>
+            </table>
         </div>
 
         <button slot="ar-button" id="ar-button">
-            <img src="https://modelviewer.dev/assets/ic_view_in_ar_new_googblue_48dp.png" width="20">
+            <i class="fas fa-vr-cardboard" style="color: #4285f4; font-size: 18px;"></i>
             View in AR
         </button>
 
     </model-viewer>
 
     <div class="bottom-bar">
-        <button class="toggle-btn" id="specs-btn" onclick="toggleSpecs()">SHOW SPECS</button>
+        <button class="toggle-btn" id="specs-btn" onclick="toggleSpecs()">
+            <i class="fas fa-list-ul"></i> &nbsp;DESIGN SPECS
+        </button>
     </div>
 
     <script>
         const viewer = document.querySelector('#viewer');
         const orthoBtn = document.querySelector('#ortho-btn');
-        const specsBtn = document.querySelector('#specs-btn');
+        const specsModal = document.querySelector('#specs-modal');
         const orthoStatus = document.querySelector('#ortho-status');
-        let specsVisible = false;
         let isOrtho = false;
 
         function toggleSpecs() {
-            specsVisible = !specsVisible;
-            const hotspots = document.querySelectorAll('.hotspot');
-            hotspots.forEach(h => h.classList.toggle('visible', specsVisible));
-            specsBtn.textContent = specsVisible ? 'HIDE SPECS' : 'SHOW SPECS';
-            specsBtn.style.background = specsVisible ? '#e74c3c' : '#4285f4';
+            specsModal.classList.toggle('visible');
         }
 
         function setView(view) {
@@ -244,11 +256,14 @@
 
         function toggleOrtho() {
             isOrtho = !isOrtho;
-            viewer.fieldOfView = isOrtho ? '1deg' : '45deg'; // 1deg approximates orthographic
+            viewer.fieldOfView = isOrtho ? '1deg' : '45deg';
             orthoBtn.classList.toggle('active', isOrtho);
-            orthoBtn.textContent = isOrtho ? '3D' : '2D';
-            orthoStatus.textContent = isOrtho ? 'ORTHOGRAPHIC (BLUEPRINT)' : 'PERSPECTIVE';
+            const icon = orthoBtn.querySelector('i');
+            icon.className = isOrtho ? 'fas fa-border-all' : 'fas fa-cube';
+            orthoStatus.textContent = isOrtho ? '2D BLUEPRINT' : '3D VIEW';
         }
     </script>
+</body>
+</html>
 </body>
 </html>
