@@ -84,11 +84,30 @@
             justify-content: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
             transition: all 0.2s;
+            position: relative;
         }
 
         .control-btn:active {
             transform: scale(0.9);
             background: #e0e0e0;
+        }
+
+        /* Bottom View Icon Styling */
+        .bottom-view-icon {
+            width: 20px;
+            height: 20px;
+            background: black;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bottom-view-icon::after {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background: white;
         }
 
         /* Specs Table Overlay */
@@ -227,17 +246,20 @@
             <button class="control-btn" onclick="setView('front')" id="btn-front">
                 <i class="fas fa-square"></i>
             </button>
+            <button class="control-btn" onclick="setView('bottom')" id="btn-bottom">
+                <div class="bottom-view-icon"></div>
+            </button>
         </div>
 
         <div class="specs-overlay" id="specs-modal">
             <i class="fas fa-times close-specs" onclick="toggleSpecs()"></i>
             <h2 id="specs-title" style="margin: 0 0 5px 0; font-size: 18px; color: #2c3e50;">Design Specs</h2>
             <table class="specs-table">
-                <tr><th colspan="2" class="category-header" id="cat-deck">Deck (Birch Plywood)</th></tr>
+                <tr><th colspan="2" class="category-header" id="cat-deck">Deck</th></tr>
                 <tr><th id="lbl-length">Length</th><td>82 cm</td></tr>
                 <tr><th id="lbl-width">Width</th><td>38 cm</td></tr>
                 <tr><th id="lbl-thick">Thickness</th><td>1.9 cm</td></tr>
-                <tr><th colspan="2" class="category-header" id="cat-roller">Roller (PVC)</th></tr>
+                <tr><th colspan="2" class="category-header" id="cat-roller">Roller</th></tr>
                 <tr><th id="lbl-dia">Diameter</th><td>11 cm</td></tr>
                 <tr><th id="lbl-rol-len">Length</th><td>42 cm</td></tr>
             </table>
@@ -267,8 +289,8 @@
                 title: "Balance Board Viewer",
                 langBtn: "हिंदी",
                 specsTitle: "Design Specs",
-                catDeck: "Deck (Birch Plywood)",
-                catRoller: "Roller (PVC)",
+                catDeck: "Deck",
+                catRoller: "Roller",
                 lblLength: "Length",
                 lblWidth: "Width",
                 lblThick: "Thickness",
@@ -278,14 +300,15 @@
                 arText: "View in AR",
                 tipTop: "Top View",
                 tipSide: "Side View",
-                tipFront: "Front View"
+                tipFront: "Front View",
+                tipBottom: "Bottom View"
             },
             hi: {
                 title: "बैलेंस बोर्ड व्यूअर",
                 langBtn: "English",
                 specsTitle: "डिजाइन विनिर्देश",
-                catDeck: "डेक (बर्च प्लाईवुड)",
-                catRoller: "रोलर (पीवीसी)",
+                catDeck: "डेक",
+                catRoller: "रोलर",
                 lblLength: "लंबाई",
                 lblWidth: "चौड़ाई",
                 lblThick: "मोटाई",
@@ -295,7 +318,8 @@
                 arText: "AR में देखें",
                 tipTop: "ऊपर का दृश्य",
                 tipSide: "साइड का दृश्य",
-                tipFront: "सामने का दृश्य"
+                tipFront: "सामने का दृश्य",
+                tipBottom: "नीचे का दृश्य"
             }
         };
 
@@ -319,6 +343,7 @@
             document.getElementById('btn-top').title = t.tipTop;
             document.getElementById('btn-side').title = t.tipSide;
             document.getElementById('btn-front').title = t.tipFront;
+            document.getElementById('btn-bottom').title = t.tipBottom;
         }
 
         function toggleSpecs() {
@@ -330,6 +355,7 @@
             if (view === 'top') viewer.cameraOrbit = '0deg 0deg 2m';
             if (view === 'side') viewer.cameraOrbit = '90deg 90deg 2m';
             if (view === 'front') viewer.cameraOrbit = '0deg 90deg 2m';
+            if (view === 'bottom') viewer.cameraOrbit = '0deg 180deg 2m';
         }
     </script>
 </body>
