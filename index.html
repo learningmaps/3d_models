@@ -10,149 +10,164 @@
         body {
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            height: 100dvh; /* Better for mobile browsers */
-            overflow: hidden; /* Prevent page sliding */
+            height: 100dvh;
+            overflow: hidden;
         }
 
         header {
-            padding: 12px 16px;
-            background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 8px 16px;
+            background: #2c3e50;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             z-index: 10;
         }
 
         h1 {
             margin: 0;
-            font-size: 1rem;
-            color: #333;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         model-viewer {
             flex-grow: 1;
             width: 100%;
-            background-color: #eee;
+            background-color: #f8f9fa;
             --poster-color: transparent;
-            touch-action: none; /* Disable browser scrolling when touching the model */
+            touch-action: none;
         }
 
-        .controls {
-            padding: 12px;
-            background: #fff;
-            font-size: 0.8rem;
-            color: #666;
-            text-align: center;
-            border-top: 1px solid #eee;
+        /* Technical Controls */
+        .view-controls {
+            position: absolute;
+            top: 60px;
+            right: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 20;
         }
 
-        /* Annotation/Hotspot styling */
+        .control-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: #333;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .control-btn:active {
+            background: #e0e0e0;
+        }
+
+        .control-btn.active {
+            background: #4285f4;
+            color: white;
+            border-color: #4285f4;
+        }
+
+        /* CAD Callouts */
         .hotspot {
             background: none;
             border: none;
             padding: 0;
-            cursor: pointer;
             pointer-events: none;
+            display: none; /* Hidden by default */
         }
 
-        .dim-line {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #4285f4;
-            font-family: sans-serif;
-            font-size: 12px;
-            font-weight: bold;
-            text-shadow: 0 0 2px white;
+        .hotspot.visible {
+            display: block;
         }
 
-        .arrow-container {
-            display: flex;
-            align-items: center;
-            width: 100px;
-        }
-
-        .arrow-line {
-            height: 2px;
+        .cad-label {
             background: #4285f4;
-            flex-grow: 1;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
             position: relative;
         }
 
-        .arrow-line::before, .arrow-line::after {
+        /* Dimension Lines */
+        .cad-line {
+            position: absolute;
+            background: #4285f4;
+            height: 1px;
+        }
+
+        .cad-line::before, .cad-line::after {
             content: "";
             position: absolute;
-            top: 50%;
-            width: 0;
-            height: 0;
-            border-top: 4px solid transparent;
-            border-bottom: 4px solid transparent;
-            transform: translateY(-50%);
+            width: 1px;
+            height: 10px;
+            background: #4285f4;
+            top: -5px;
+        }
+        .cad-line::before { left: 0; }
+        .cad-line::after { right: 0; }
+
+        .bottom-bar {
+            padding: 12px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            border-top: 1px solid #eee;
         }
 
-        .arrow-line::before {
-            left: 0;
-            border-right: 8px solid #4285f4;
+        .toggle-btn {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
         }
 
-        .arrow-line::after {
-            right: 0;
-            border-left: 8px solid #4285f4;
-        }
-
-        /* Hide in AR */
-        model-viewer[ar-status="active"] .hotspot {
-            display: none;
-        }
-
-        /* AR Button styling */
         #ar-button {
-            background-image: url(https://modelviewer.dev/assets/ic_view_in_ar_new_googblue_48dp.png);
-            background-repeat: no-repeat;
-            background-size: 18px 18px;
-            background-position: 10px 50%;
-            background-color: #fff;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            bottom: 12px;
-            padding: 0px 12px 0px 32px;
-            font-family: Roboto Regular, Helvetica Neue, sans-serif;
-            font-size: 12px;
-            color:#4285f4;
-            height: 30px;
-            line-height: 30px;
-            border-radius: 15px;
-            border: 1px solid #DADCE0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        #ar-button:active {
-            background-color: #E8EAED;
-        }
-
-        #ar-button:focus {
-            outline: none;
-        }
-
-        #ar-button:focus-visible {
-            outline: 1px solid #4285f4;
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Balance Board Design Viewer</h1>
+        <h1>Specs: Balance Board</h1>
+        <div id="ortho-status" style="font-size: 10px; opacity: 0.7;">PERSPECTIVE</div>
     </header>
 
-    <!-- Use your balance_board.glb file -->
     <model-viewer 
+        id="viewer"
         src="balance_board.glb" 
         ar 
         ar-modes="webxr scene-viewer quick-look" 
@@ -164,40 +179,76 @@
         auto-rotate 
         exposure="1">
 
+        <!-- Dimension Hotspots -->
         <button class="hotspot" slot="hotspot-length" data-position="0m 0.05m 0m" data-normal="0m 1m 0m">
-            <div class="dim-line">
-                <span>82cm Length</span>
-                <div class="arrow-container" style="width: 150px;">
-                    <div class="arrow-line"></div>
-                </div>
+            <div style="display: flex; flex-direction: column; align-items: center; transform: translateY(-20px);">
+                <div class="cad-label">82cm Length</div>
+                <div class="cad-line" style="width: 160px; margin-top: 4px;"></div>
             </div>
         </button>
+
         <button class="hotspot" slot="hotspot-width" data-position="0m 0.05m 0m" data-normal="0m 1m 0m">
-            <div class="dim-line" style="transform: rotate(90deg);">
-                <span>38cm Width</span>
-                <div class="arrow-container" style="width: 80px;">
-                    <div class="arrow-line"></div>
-                </div>
+            <div style="display: flex; flex-direction: column; align-items: center; transform: rotate(90deg) translateY(-20px);">
+                <div class="cad-label">38cm Width</div>
+                <div class="cad-line" style="width: 80px; margin-top: 4px;"></div>
             </div>
         </button>
+
         <button class="hotspot" slot="hotspot-roller" data-position="0m -0.11m 0m" data-normal="0m 0m 1m">
-            <div class="dim-line">
-                <span>11cm Roller</span>
-                <div class="arrow-container" style="width: 40px;">
-                    <div class="arrow-line"></div>
-                </div>
+            <div style="display: flex; flex-direction: column; align-items: center; transform: translateY(10px);">
+                <div class="cad-line" style="width: 40px; margin-bottom: 4px;"></div>
+                <div class="cad-label">11cm Roller</div>
             </div>
         </button>
         
+        <div class="view-controls">
+            <button class="control-btn" onclick="setView('top')">TOP</button>
+            <button class="control-btn" onclick="setView('side')">SIDE</button>
+            <button class="control-btn" onclick="setView('front')">FRONT</button>
+            <button class="control-btn" id="ortho-btn" onclick="toggleOrtho()">2D</button>
+        </div>
+
         <button slot="ar-button" id="ar-button">
-            View in your space
+            <img src="https://modelviewer.dev/assets/ic_view_in_ar_new_googblue_48dp.png" width="20">
+            View in AR
         </button>
 
     </model-viewer>
 
-    <div class="controls">
-        Use one finger to rotate • Two fingers to zoom/pan
+    <div class="bottom-bar">
+        <button class="toggle-btn" id="specs-btn" onclick="toggleSpecs()">SHOW SPECS</button>
     </div>
 
+    <script>
+        const viewer = document.querySelector('#viewer');
+        const orthoBtn = document.querySelector('#ortho-btn');
+        const specsBtn = document.querySelector('#specs-btn');
+        const orthoStatus = document.querySelector('#ortho-status');
+        let specsVisible = false;
+        let isOrtho = false;
+
+        function toggleSpecs() {
+            specsVisible = !specsVisible;
+            const hotspots = document.querySelectorAll('.hotspot');
+            hotspots.forEach(h => h.classList.toggle('visible', specsVisible));
+            specsBtn.textContent = specsVisible ? 'HIDE SPECS' : 'SHOW SPECS';
+            specsBtn.style.background = specsVisible ? '#e74c3c' : '#4285f4';
+        }
+
+        function setView(view) {
+            viewer.autoRotate = false;
+            if (view === 'top') viewer.cameraOrbit = '0deg 0deg 2m';
+            if (view === 'side') viewer.cameraOrbit = '90deg 90deg 2m';
+            if (view === 'front') viewer.cameraOrbit = '0deg 90deg 2m';
+        }
+
+        function toggleOrtho() {
+            isOrtho = !isOrtho;
+            viewer.fieldOfView = isOrtho ? '1deg' : '45deg'; // 1deg approximates orthographic
+            orthoBtn.classList.toggle('active', isOrtho);
+            orthoBtn.textContent = isOrtho ? '3D' : '2D';
+            orthoStatus.textContent = isOrtho ? 'ORTHOGRAPHIC (BLUEPRINT)' : 'PERSPECTIVE';
+        }
+    </script>
 </body>
 </html>
