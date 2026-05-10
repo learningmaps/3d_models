@@ -38,6 +38,18 @@
             letter-spacing: 1px;
         }
 
+        .lang-toggle {
+            background: #4285f4;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
         model-viewer {
             flex-grow: 1;
             width: 100%;
@@ -165,7 +177,10 @@
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+            box-shadow: 0 4px 12px rgba(66, 134, 244, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         #ar-button {
@@ -185,7 +200,8 @@
 <body>
 
     <header>
-        <h1>Balance Board Viewer</h1>
+        <h1 id="title">Balance Board Viewer</h1>
+        <button class="lang-toggle" onclick="toggleLang()" id="lang-btn">हिंदी</button>
     </header>
 
     <model-viewer 
@@ -202,47 +218,108 @@
         exposure="1">
         
         <div class="view-controls">
-            <button class="control-btn" onclick="setView('top')" title="Top View">
+            <button class="control-btn" onclick="setView('top')" id="btn-top">
                 <i class="fas fa-arrows-left-right" style="transform: rotate(90deg);"></i>
             </button>
-            <button class="control-btn" onclick="setView('side')" title="Side View">
+            <button class="control-btn" onclick="setView('side')" id="btn-side">
                 <i class="fas fa-arrows-left-right"></i>
             </button>
-            <button class="control-btn" onclick="setView('front')" title="Front View">
+            <button class="control-btn" onclick="setView('front')" id="btn-front">
                 <i class="fas fa-square"></i>
             </button>
         </div>
 
         <div class="specs-overlay" id="specs-modal">
             <i class="fas fa-times close-specs" onclick="toggleSpecs()"></i>
-            <h2 style="margin: 0 0 5px 0; font-size: 18px; color: #2c3e50;">Design Specs</h2>
+            <h2 id="specs-title" style="margin: 0 0 5px 0; font-size: 18px; color: #2c3e50;">Design Specs</h2>
             <table class="specs-table">
-                <tr><th colspan="2" class="category-header">Deck (Birch Plywood)</th></tr>
-                <tr><th>Length</th><td>82 cm</td></tr>
-                <tr><th>Width</th><td>38 cm</td></tr>
-                <tr><th>Thickness</th><td>1.9 cm</td></tr>
-                <tr><th colspan="2" class="category-header">Roller (PVC)</th></tr>
-                <tr><th>Diameter</th><td>11 cm</td></tr>
-                <tr><th>Length</th><td>42 cm</td></tr>
+                <tr><th colspan="2" class="category-header" id="cat-deck">Deck (Birch Plywood)</th></tr>
+                <tr><th id="lbl-length">Length</th><td>82 cm</td></tr>
+                <tr><th id="lbl-width">Width</th><td>38 cm</td></tr>
+                <tr><th id="lbl-thick">Thickness</th><td>1.9 cm</td></tr>
+                <tr><th colspan="2" class="category-header" id="cat-roller">Roller (PVC)</th></tr>
+                <tr><th id="lbl-dia">Diameter</th><td>11 cm</td></tr>
+                <tr><th id="lbl-rol-len">Length</th><td>42 cm</td></tr>
             </table>
         </div>
 
         <button slot="ar-button" id="ar-button">
             <i class="fas fa-vr-cardboard" style="color: #4285f4; font-size: 18px;"></i>
-            View in AR
+            <span id="ar-text">View in AR</span>
         </button>
 
     </model-viewer>
 
     <div class="bottom-bar">
         <button class="toggle-btn" id="specs-btn" onclick="toggleSpecs()">
-            <i class="fas fa-list-ul"></i> &nbsp;DESIGN SPECS
+            <i class="fas fa-list-ul"></i>
+            <span id="btn-specs-text">DESIGN SPECS</span>
         </button>
     </div>
 
     <script>
         const viewer = document.querySelector('#viewer');
         const specsModal = document.querySelector('#specs-modal');
+        let currentLang = 'en';
+
+        const translations = {
+            en: {
+                title: "Balance Board Viewer",
+                langBtn: "हिंदी",
+                specsTitle: "Design Specs",
+                catDeck: "Deck (Birch Plywood)",
+                catRoller: "Roller (PVC)",
+                lblLength: "Length",
+                lblWidth: "Width",
+                lblThick: "Thickness",
+                lblDia: "Diameter",
+                lblRolLen: "Length",
+                btnSpecsText: "DESIGN SPECS",
+                arText: "View in AR",
+                tipTop: "Top View",
+                tipSide: "Side View",
+                tipFront: "Front View"
+            },
+            hi: {
+                title: "बैलेंस बोर्ड व्यूअर",
+                langBtn: "English",
+                specsTitle: "डिजाइन विनिर्देश",
+                catDeck: "डेक (बर्च प्लाईवुड)",
+                catRoller: "रोलर (पीवीसी)",
+                lblLength: "लंबाई",
+                lblWidth: "चौड़ाई",
+                lblThick: "मोटाई",
+                lblDia: "व्यास",
+                lblRolLen: "लंबाई",
+                btnSpecsText: "डिजाइन विनिर्देश",
+                arText: "AR में देखें",
+                tipTop: "ऊपर का दृश्य",
+                tipSide: "साइड का दृश्य",
+                tipFront: "सामने का दृश्य"
+            }
+        };
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            const t = translations[currentLang];
+            
+            document.getElementById('title').textContent = t.title;
+            document.getElementById('lang-btn').textContent = t.langBtn;
+            document.getElementById('specs-title').textContent = t.specsTitle;
+            document.getElementById('cat-deck').textContent = t.catDeck;
+            document.getElementById('cat-roller').textContent = t.catRoller;
+            document.getElementById('lbl-length').textContent = t.lblLength;
+            document.getElementById('lbl-width').textContent = t.lblWidth;
+            document.getElementById('lbl-thick').textContent = t.lblThick;
+            document.getElementById('lbl-dia').textContent = t.lblDia;
+            document.getElementById('lbl-rol-len').textContent = t.lblRolLen;
+            document.getElementById('btn-specs-text').textContent = t.btnSpecsText;
+            document.getElementById('ar-text').textContent = t.arText;
+            
+            document.getElementById('btn-top').title = t.tipTop;
+            document.getElementById('btn-side').title = t.tipSide;
+            document.getElementById('btn-front').title = t.tipFront;
+        }
 
         function toggleSpecs() {
             specsModal.classList.toggle('visible');
