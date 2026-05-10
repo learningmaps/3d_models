@@ -136,6 +136,11 @@
             to { opacity: 1; transform: translate(-50%, -50%); }
         }
 
+        .specs-table-container {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
         .specs-table {
             width: 100%;
             border-collapse: collapse;
@@ -163,7 +168,7 @@
         .specs-table th {
             color: #666;
             font-weight: 500;
-            width: 40%;
+            width: 45%;
         }
 
         .specs-table td {
@@ -254,15 +259,23 @@
         <div class="specs-overlay" id="specs-modal">
             <i class="fas fa-times close-specs" onclick="toggleSpecs()"></i>
             <h2 id="specs-title" style="margin: 0 0 5px 0; font-size: 18px; color: #2c3e50;">Design Specs</h2>
-            <table class="specs-table">
-                <tr><th colspan="2" class="category-header" id="cat-deck">Deck</th></tr>
-                <tr><th id="lbl-length">Length</th><td>82 cm</td></tr>
-                <tr><th id="lbl-width">Width</th><td>38 cm</td></tr>
-                <tr><th id="lbl-thick">Thickness</th><td>1.9 cm</td></tr>
-                <tr><th colspan="2" class="category-header" id="cat-roller">Roller</th></tr>
-                <tr><th id="lbl-dia">Diameter</th><td>11 cm</td></tr>
-                <tr><th id="lbl-rol-len">Length</th><td>42 cm</td></tr>
-            </table>
+            <div class="specs-table-container">
+                <table class="specs-table">
+                    <tr><th colspan="2" class="category-header" id="cat-deck">Deck</th></tr>
+                    <tr><th id="lbl-length">Length</th><td>82 cm</td></tr>
+                    <tr><th id="lbl-width">Width</th><td>38 cm</td></tr>
+                    <tr><th id="lbl-thick">Thickness</th><td>1.9 cm</td></tr>
+                    
+                    <tr><th colspan="2" class="category-header" id="cat-roller">Roller</th></tr>
+                    <tr><th id="lbl-dia">Diameter</th><td>11 cm</td></tr>
+                    <tr><th id="lbl-rol-len">Length</th><td>42 cm</td></tr>
+
+                    <tr><th colspan="2" class="category-header" id="cat-stoppers">Stoppers</th></tr>
+                    <tr><th id="lbl-stop-place">Placement</th><td>39 cm (from center)</td></tr>
+                    <tr><th id="lbl-stop-size">Size</th><td>24 x 4 cm</td></tr>
+                    <tr><th id="lbl-stop-gap">Gap from end</th><td>2 cm</td></tr>
+                </table>
+            </div>
         </div>
 
         <button slot="ar-button" id="ar-button">
@@ -291,11 +304,15 @@
                 specsTitle: "Design Specs",
                 catDeck: "Deck",
                 catRoller: "Roller",
+                catStoppers: "Stoppers",
                 lblLength: "Length",
                 lblWidth: "Width",
                 lblThick: "Thickness",
                 lblDia: "Diameter",
                 lblRolLen: "Length",
+                lblStopPlace: "Placement",
+                lblStopSize: "Size",
+                lblStopGap: "Gap from end",
                 btnSpecsText: "DESIGN SPECS",
                 arText: "View in AR",
                 tipTop: "Top View",
@@ -309,11 +326,15 @@
                 specsTitle: "डिजाइन विनिर्देश",
                 catDeck: "डेक",
                 catRoller: "रोलर",
+                catStoppers: "स्टॉपर",
                 lblLength: "लंबाई",
                 lblWidth: "चौड़ाई",
                 lblThick: "मोटाई",
                 lblDia: "व्यास",
                 lblRolLen: "लंबाई",
+                lblStopPlace: "स्थान",
+                lblStopSize: "आकार",
+                lblStopGap: "अंत से अंतर",
                 btnSpecsText: "डिजाइन विनिर्देश",
                 arText: "AR में देखें",
                 tipTop: "ऊपर का दृश्य",
@@ -332,11 +353,15 @@
             document.getElementById('specs-title').textContent = t.specsTitle;
             document.getElementById('cat-deck').textContent = t.catDeck;
             document.getElementById('cat-roller').textContent = t.catRoller;
+            document.getElementById('cat-stoppers').textContent = t.catStoppers;
             document.getElementById('lbl-length').textContent = t.lblLength;
             document.getElementById('lbl-width').textContent = t.lblWidth;
             document.getElementById('lbl-thick').textContent = t.lblThick;
             document.getElementById('lbl-dia').textContent = t.lblDia;
             document.getElementById('lbl-rol-len').textContent = t.lblRolLen;
+            document.getElementById('lbl-stop-place').textContent = t.lblStopPlace;
+            document.getElementById('lbl-stop-size').textContent = t.lblStopSize;
+            document.getElementById('lbl-stop-gap').textContent = t.lblStopGap;
             document.getElementById('btn-specs-text').textContent = t.btnSpecsText;
             document.getElementById('ar-text').textContent = t.arText;
             
