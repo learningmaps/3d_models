@@ -15,10 +15,12 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            height: 100dvh; /* Better for mobile browsers */
+            overflow: hidden; /* Prevent page sliding */
         }
 
         header {
-            padding: 16px;
+            padding: 12px 16px;
             background: #fff;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             z-index: 10;
@@ -26,7 +28,7 @@
 
         h1 {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #333;
         }
 
@@ -35,14 +37,16 @@
             width: 100%;
             background-color: #eee;
             --poster-color: transparent;
+            touch-action: none; /* Disable browser scrolling when touching the model */
         }
 
         .controls {
-            padding: 16px;
+            padding: 12px;
             background: #fff;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #666;
             text-align: center;
+            border-top: 1px solid #eee;
         }
 
         /* AR Button styling */
@@ -92,7 +96,6 @@
         ar 
         ar-modes="webxr scene-viewer quick-look" 
         camera-controls 
-        touch-action="pan-y"
         shadow-intensity="1" 
         auto-rotate 
         exposure="1">
