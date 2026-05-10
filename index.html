@@ -295,7 +295,7 @@
     <script>
         const viewer = document.querySelector('#viewer');
         const specsModal = document.querySelector('#specs-modal');
-        let currentLang = 'en';
+        let currentLang = 'hi'; // Default to Hindi
 
         const translations = {
             en: {
@@ -344,8 +344,7 @@
             }
         };
 
-        function toggleLang() {
-            currentLang = currentLang === 'en' ? 'hi' : 'en';
+        function updateUI() {
             const t = translations[currentLang];
             
             document.getElementById('title').textContent = t.title;
@@ -370,6 +369,14 @@
             document.getElementById('btn-front').title = t.tipFront;
             document.getElementById('btn-bottom').title = t.tipBottom;
         }
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            updateUI();
+        }
+
+        // Initialize with default language
+        updateUI();
 
         function toggleSpecs() {
             specsModal.classList.toggle('visible');
